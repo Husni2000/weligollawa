@@ -5,120 +5,141 @@
 <title>WCC Weligollawa Members</title>
 
 <style>
-    :root {
-        --blue: #1A73E8;
-    }
+:root {
+    --blue: #1A73E8;
+}
 
-    body {
-        margin: 0;
-        font-family: "Segoe UI", Arial, sans-serif;
-        background: var(--blue);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: var(--blue);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
-    /* Header */
-    .header {
-        text-align: center;
-        padding: 20px 12px;
-        color: #ffffff;
-    }
+/* Header */
+.header {
+    text-align: center;
+    padding: 20px 12px;
+    color: #ffffff;
+}
 
-    .header h1 {
-        margin: 0;
-        font-size: 26px;
-        font-weight: 600;
-    }
+.header h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 600;
+}
 
-    .header p {
-        margin-top: 4px;
-        font-size: 13px;
-        opacity: 0.9;
-    }
+.header p {
+    margin-top: 4px;
+    font-size: 13px;
+    opacity: 0.9;
+}
 
-    /* Card container */
+/* Card container: flex wrap */
+.card-container {
+    background: #f5f9ff;
+    margin: 0 auto;
+    max-width: 1300px;
+    border-radius: 20px 20px 0 0;
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    box-shadow: 0 -6px 20px rgba(0,0,0,0.15);
+    flex: 1;
+}
+
+/* Compact Card */
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+    width: 120px; /* card fits image width */
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+    box-shadow: 0 5px 14px rgba(0,0,0,0.08);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(26,115,232,0.25);
+}
+
+/* Image */
+.card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    border: 3px solid var(--blue);
+    background: #ffffff;
+    transition: transform 0.25s ease;
+}
+
+.card:hover img {
+    transform: scale(1.05);
+}
+
+/* Name */
+.card h3 {
+    margin: 6px 0 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a237e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 12px;
+    color: #ffffff;
+    font-size: 13px;
+    opacity: 0.85;
+}
+
+/* Mobile: 1 card per row */
+@media (max-width: 480px) {
     .card-container {
-        background: #f5f9ff;
-        margin: 0 auto;
-        max-width: 1200px;
-        border-radius: 20px 20px 0 0;
-        padding: 15px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
-        box-shadow: 0 -6px 20px rgba(0,0,0,0.15);
-        flex: 1;
+        gap: 10px;
     }
 
-    /* Compact card */
     .card {
-        background: #ffffff;
-        border-radius: 12px;
+        width: 90%;
+        max-width: 200px;
         padding: 10px;
-        text-align: center;
-        width: 120px; /* width fits image */
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-        cursor: pointer;
-        box-shadow: 0 5px 14px rgba(0,0,0,0.08);
     }
 
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(26,115,232,0.25);
-    }
-
-    /* Image */
-    .card img {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        border-radius: 12px;
-        border: 3px solid var(--blue);
-        background: #ffffff;
-        transition: transform 0.25s ease;
-    }
-
-    .card:hover img {
-        transform: scale(1.05);
-    }
-
-    /* Name */
     .card h3 {
-        margin: 6px 0 0;
-        font-size: 13px;
-        font-weight: 600;
-        color: #1a237e;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        font-size: 14px;
     }
+}
 
-    /* Footer */
-    footer {
-        text-align: center;
-        padding: 12px;
-        color: #ffffff;
-        font-size: 13px;
-        opacity: 0.85;
+/* Tablet: 2-3 cards per row */
+@media (min-width: 481px) and (max-width: 768px) {
+    .card {
+        width: calc(50% - 15px); /* 2 cards per row */
     }
+}
 
-    /* Mobile */
-    @media (max-width: 480px) {
-        .card-container {
-            gap: 10px;
-        }
-
-        .card {
-            width: 100px;
-            padding: 8px;
-        }
-
-        .card h3 {
-            font-size: 12px;
-        }
+/* Small desktop: 3-4 cards per row */
+@media (min-width: 769px) and (max-width: 1200px) {
+    .card {
+        width: calc(25% - 20px); /* 4 cards per row */
     }
+}
 
+/* Desktop: 4-6 cards per row */
+@media (min-width: 1201px) {
+    .card {
+        width: calc(16.66% - 18px); /* 6 cards per row */
+    }
+}
 </style>
 </head>
 
@@ -136,37 +157,34 @@
 </footer>
 
 <script>
-    const sheetId = "1KpFvhwi-yuo63ZSSQK80My6zM59gk2hHY1HZFk9q1Os";
-    const sheetName = "Players wcc";
+const sheetId = "1KpFvhwi-yuo63ZSSQK80My6zM59gk2hHY1HZFk9q1Os";
+const sheetName = "Players wcc";
 
-    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
+const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
 
-    fetch(url)
-        .then(res => res.text())
-        .then(data => {
-            const json = JSON.parse(data.substring(47).slice(0, -2));
-            const rows = json.table.rows;
+fetch(url)
+    .then(res => res.text())
+    .then(data => {
+        const json = JSON.parse(data.substring(47).slice(0, -2));
+        const rows = json.table.rows;
+        const container = document.getElementById("members");
 
-            const container = document.getElementById("members");
+        rows.forEach(row => {
+            const name = row.c[0]?.v;
+            const image = row.c[3]?.v;
 
-            rows.forEach(row => {
-                const name = row.c[0]?.v;
-                const image = row.c[3]?.v;
-
-                if (name && image) {
-                    const card = document.createElement("div");
-                    card.className = "card";
-
-                    card.innerHTML = `
-                        <img src="${image}" alt="${name}">
-                        <h3 title="${name}">${name}</h3>
-                    `;
-
-                    container.appendChild(card);
-                }
-            });
-        })
-        .catch(err => console.error("Error loading members:", err));
+            if (name && image) {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.innerHTML = `
+                    <img src="${image}" alt="${name}">
+                    <h3 title="${name}">${name}</h3>
+                `;
+                container.appendChild(card);
+            }
+        });
+    })
+    .catch(err => console.error("Error loading members:", err));
 </script>
 
 </body>

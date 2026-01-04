@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Members</title>
+<title>WCC Weligollawa Members</title>
 
 <style>
+    :root {
+        --blue: #1A73E8;
+    }
+
     body {
         margin: 0;
         font-family: "Segoe UI", Arial, sans-serif;
-        background: #1A73E8;
+        background: var(--blue);
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -17,88 +21,104 @@
     /* Header */
     .header {
         text-align: center;
-        padding: 30px 15px;
+        padding: 20px 12px;
         color: #ffffff;
     }
 
     .header h1 {
         margin: 0;
-        font-size: 32px;
+        font-size: 26px;
         font-weight: 600;
-        letter-spacing: 1px;
     }
 
     .header p {
-        margin-top: 8px;
-        font-size: 15px;
+        margin-top: 4px;
+        font-size: 13px;
         opacity: 0.9;
     }
 
-    /* Card container */
+    /* Mobile-first container */
     .card-container {
         background: #f5f9ff;
         margin: 0 auto;
-        max-width: 1200px;
-        border-radius: 25px 25px 0 0;
-        padding: 30px;
+        max-width: 1300px;
+        border-radius: 20px 20px 0 0;
+        padding: 15px;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 25px;
-        box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
+        grid-template-columns: 1fr; /* 📱 Mobile: one by one */
+        gap: 15px;
+        box-shadow: 0 -6px 20px rgba(0,0,0,0.15);
         flex: 1;
     }
 
-    /* Individual card */
+    /* Card */
     .card {
         background: #ffffff;
-        border-radius: 18px;
-        text-align: center;
-        padding: 20px 15px;
-        box-shadow: 0 8px 20px rgba(26,115,232,0.15);
-        transition: all 0.3s ease;
+        border-radius: 14px;
+        padding: 14px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 5px 14px rgba(0,0,0,0.08);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
         cursor: pointer;
     }
 
     .card:hover {
-        transform: translateY(-8px) scale(1.03);
-        box-shadow: 0 15px 30px rgba(26,115,232,0.3);
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px rgba(26,115,232,0.25);
     }
 
+    /* Image */
     .card img {
-        width: 110px;
-        height: 110px;
+        width: 70px;
+        height: 70px;
+        border-radius: 12px;
         object-fit: cover;
-        border-radius: 50%;
-        border: 5px solid #1A73E8;
+        border: 3px solid var(--blue);
         background: #ffffff;
+        flex-shrink: 0;
     }
 
+    /* Name */
     .card h3 {
-        margin-top: 14px;
-        margin-bottom: 0;
-        font-size: 17px;
-        color: #1A73E8;
+        margin: 0;
+        font-size: 15px;
         font-weight: 600;
+        color: #1a237e;
+    }
+
+    /* Tablet */
+    @media (min-width: 600px) {
+        .card-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .card {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .card img {
+            width: 120px;
+            height: 120px;
+        }
+    }
+
+    /* Desktop */
+    @media (min-width: 992px) {
+        .card-container {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
     }
 
     /* Footer */
     footer {
         text-align: center;
-        padding: 15px 10px;
+        padding: 12px;
         color: #ffffff;
-        font-size: 14px;
+        font-size: 13px;
         opacity: 0.85;
-    }
-
-    /* Mobile adjustments */
-    @media (max-width: 480px) {
-        .header h1 {
-            font-size: 26px;
-        }
-
-        .card-container {
-            padding: 20px;
-        }
     }
 </style>
 </head>
@@ -107,7 +127,7 @@
 
 <div class="header">
     <h1>Our Members</h1>
-    <p>Meet our amazing team</p>
+    <p>WCC Weligollawa</p>
 </div>
 
 <div class="card-container" id="members"></div>
@@ -147,7 +167,7 @@
                 }
             });
         })
-        .catch(error => console.error("Error loading data:", error));
+        .catch(err => console.error("Error loading members:", err));
 </script>
 
 </body>

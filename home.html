@@ -5,35 +5,119 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WCC Sports Club Weligollawa</title>
 <style>
-body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #50E3C2, #4A90E2); color: #fff; }
-header { background: rgba(0,0,0,0.3); padding: 20px; text-align: center; font-size: 28px; font-weight: bold; }
-nav { text-align: center; margin: 20px 0; }
-nav a { color: #fff; text-decoration: none; margin: 0 15px; font-weight: bold; font-size: 18px; }
-nav a:hover { text-decoration: underline; }
-main { text-align: center; padding: 40px 20px; }
-main h2 { font-size: 24px; margin-bottom: 20px; }
-main p { font-size: 18px; line-height: 1.6; max-width: 600px; margin: 0 auto 30px; }
-button { padding: 14px 28px; font-size: 18px; background: #1A73E8; border: none; border-radius: 8px; color: #fff; cursor: pointer; transition: background 0.3s; }
-button:hover { background: #155cbf; }
+/* ===== Global Styles ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background: #f0f4f8; color: #333; scroll-behavior: smooth; }
+a { text-decoration: none; color: inherit; }
+
+/* ===== Navbar ===== */
+header { background: #1A73E8; color: #fff; padding: 20px 0; position: sticky; top: 0; z-index: 100; }
+nav { display: flex; justify-content: center; gap: 25px; font-weight: bold; font-size: 18px; }
+nav a { color: #fff; transition: 0.3s; }
+nav a:hover { text-decoration: underline; color: #ffe100; }
+
+/* ===== Hero Section ===== */
+.hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 100px 20px; background: linear-gradient(135deg, #50E3C2, #4A90E2); color: #fff; }
+.hero h1 { font-size: 48px; margin-bottom: 20px; }
+.hero p { font-size: 20px; max-width: 600px; margin-bottom: 30px; }
+.hero button { background: #fff; color: #1A73E8; border: none; padding: 15px 30px; font-size: 18px; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+.hero button:hover { background: #ffe100; }
+
+/* ===== About Section ===== */
+.about { padding: 60px 20px; text-align: center; background: #fff; }
+.about h2 { font-size: 36px; margin-bottom: 20px; color: #1A73E8; }
+.about p { font-size: 18px; max-width: 800px; margin: 0 auto; line-height: 1.6; }
+
+/* ===== Members Section ===== */
+.members { padding: 60px 20px; text-align: center; background: #f0f4f8; }
+.members h2 { font-size: 36px; margin-bottom: 40px; color: #1A73E8; }
+.member-cards { display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; }
+.card { background: #fff; border-radius: 15px; padding: 20px; width: 250px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; }
+.card:hover { transform: translateY(-10px); box-shadow: 0 15px 25px rgba(0,0,0,0.2); }
+.card img { width: 100%; border-radius: 15px; margin-bottom: 15px; }
+.card h3 { font-size: 22px; margin-bottom: 5px; color: #1A73E8; }
+.card p { font-size: 16px; color: #555; }
+
+/* ===== Footer ===== */
+footer { background: #1A73E8; color: #fff; text-align: center; padding: 20px; }
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) { .member-cards { flex-direction: column; align-items: center; } }
+@media (max-width: 500px) { .hero h1 { font-size: 36px; } .hero p { font-size: 18px; } .hero button { font-size: 16px; padding: 12px 25px; } }
 </style>
 </head>
 <body>
 
-<header>WCC Sports Club - Weligollawa</header>
+<!-- ===== Navbar ===== -->
+<header>
+    <nav>
+        <a href="#hero">Home</a>
+        <a href="#about">About</a>
+        <a href="#members">Members</a>
+        <a href="form.html">Join / Register</a>
+    </nav>
+</header>
 
-<nav>
-    <a href="index.html">Home</a>
-    <a href="form.html">Join / Register</a>
-    <a href="#">Events</a>
-    <a href="#">Contact</a>
-</nav>
-
-<main>
-    <h2>Welcome to WCC Sports Club!</h2>
-    <p>We are dedicated to promoting sports and physical activities in Weligollawa. Join us to participate in exciting events, training sessions, and competitions.</p>
-    <p>Click below to register and become a member of our club.</p>
+<!-- ===== Hero Section ===== -->
+<section class="hero" id="hero">
+    <h1>WCC Sports Club - Weligollawa</h1>
+    <p>Promoting sports, teamwork, and physical fitness in Weligollawa. Join us and be part of our active community!</p>
     <a href="form.html"><button>Register Now</button></a>
-</main>
+</section>
+
+<!-- ===== About Section ===== -->
+<section class="about" id="about">
+    <h2>About Us</h2>
+    <p>WCC Sports Club is dedicated to encouraging sportsmanship and healthy competition. We organize regular tournaments, training sessions, and community events. Whether you are a beginner or an experienced athlete, WCC welcomes everyone to join and grow together!</p>
+</section>
+
+<!-- ===== Members Section ===== -->
+<section class="members" id="members">
+    <h2>Our Key Members</h2>
+    <div class="member-cards">
+        <!-- President -->
+        <div class="card">
+            <img src="https://via.placeholder.com/250x250.png?text=President" alt="President">
+            <h3>Sisan</h3>
+            <p>President</p>
+        </div>
+        <!-- Secretary -->
+        <div class="card">
+            <img src="https://via.placeholder.com/250x250.png?text=Secretary" alt="Secretary">
+            <h3>Mohamed</h3>
+            <p>Secretary</p>
+        </div>
+        <!-- Member -->
+        <div class="card">
+            <img src="https://via.placeholder.com/250x250.png?text=Member" alt="Member">
+            <h3>Rohan Fernando</h3>
+            <p>Member</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+    &copy; 2026 WCC Sports Club Weligollawa. All rights reserved.
+</footer>
+
+<!-- ===== JS for simple scroll animation ===== -->
+<script>
+const cards = document.querySelectorAll('.card');
+window.addEventListener('scroll', () => {
+    const triggerBottom = window.innerHeight / 5 * 4;
+    cards.forEach(card => {
+        const cardTop = card.getBoundingClientRect().top;
+        if(cardTop < triggerBottom){
+            card.style.transform = "translateY(0)";
+            card.style.opacity = "1";
+        } else {
+            card.style.transform = "translateY(50px)";
+            card.style.opacity = "0";
+        }
+    });
+});
+</script>
 
 </body>
 </html>

@@ -230,16 +230,21 @@ window.addEventListener('scroll', () => {
         }
     });
 });
-    // Show ad screen for 3 seconds, then reveal members page
     window.onload = function() {
         const adScreen = document.getElementById('adScreen');
         const members = document.getElementById('members');
 
+        // Show ad for 15 seconds (15000ms)
         setTimeout(() => {
-            adScreen.style.display = 'none'; // hide ad
-            members.style.display = 'block'; // show members
-        }, 90000); // 3000ms = 3 seconds
+            adScreen.style.opacity = '0'; // fade out
+            // Wait for transition to finish
+            setTimeout(() => {
+                adScreen.style.display = 'none';
+                members.style.display = 'block';
+            }, 1000); // matches transition duration
+        }, 15000); 
     }
+
 </script>
 
 </body>

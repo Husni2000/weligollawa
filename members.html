@@ -3,155 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <title>WCC Weligollawa Members</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap 5 CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 :root {
-    --blue: #1A73E8;
+    --blue: #0d6efd;
 }
 
 body {
-    margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
     background: var(--blue);
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 }
 
 /* Header */
 .header {
+    color: #fff;
     text-align: center;
-    padding: 20px 12px;
-    color: #ffffff;
+    padding: 25px 10px;
 }
 
-.header h1 {
-    margin: 0;
-    font-size: 26px;
-    font-weight: 600;
-}
-
-.header p {
-    margin-top: 4px;
-    font-size: 13px;
-    opacity: 0.9;
-}
-
-/* Card container: flex wrap */
-.card-container {
-    background: #f5f9ff;
-    margin: 0 auto;
-    max-width: 1300px;
+/* Main container */
+.members-wrapper {
+    background: #f8f9fa;
     border-radius: 20px 20px 0 0;
-    padding: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    box-shadow: 0 -6px 20px rgba(0,0,0,0.15);
+    padding: 20px;
     flex: 1;
+    box-shadow: 0 -6px 20px rgba(0,0,0,0.15);
 }
 
-/* Compact Card */
-.card {
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 10px;
-    text-align: center;
-    width: 120px; /* card fits image width */
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+/* Card */
+.member-card {
+    transition: transform .3s ease, box-shadow .3s ease;
     cursor: pointer;
-    box-shadow: 0 5px 14px rgba(0,0,0,0.08);
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(26,115,232,0.25);
+.member-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(13,110,253,.3);
 }
 
-/* Image */
-.card img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
+.member-card img {
+    aspect-ratio: 1/1;
+    object-fit: cover;
     border-radius: 12px;
     border: 3px solid var(--blue);
-    background: #ffffff;
-    transition: transform 0.25s ease;
 }
 
-.card:hover img {
-    transform: scale(1.05);
-}
-
-/* Name */
-.card h3 {
-    margin: 6px 0 0;
-    font-size: 13px;
-    font-weight: 600;
-    color: #1a237e;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+/* Mobile auto scroll */
+@media (max-width: 576px) {
+    #membersRow {
+        max-height: calc(100vh - 220px);
+        overflow-y: auto;
+        scroll-behavior: smooth;
+    }
 }
 
 /* Footer */
 footer {
     text-align: center;
     padding: 12px;
-    color: #ffffff;
-    font-size: 13px;
-    opacity: 0.85;
-}
-
-/* Mobile: 1 card per row */
-@media (max-width: 480px) {
-    .card-container {
-        gap: 10px;
-    }
-
-    .card {
-        width: 90%;
-        max-width: 200px;
-        padding: 10px;
-    }
-
-    .card h3 {
-        font-size: 14px;
-    }
-}
-
-/* Tablet: 2-3 cards per row */
-@media (min-width: 481px) and (max-width: 768px) {
-    .card {
-        width: calc(50% - 15px); /* 2 cards per row */
-    }
-}
-
-/* Small desktop: 3-4 cards per row */
-@media (min-width: 769px) and (max-width: 1200px) {
-    .card {
-        width: calc(25% - 20px); /* 4 cards per row */
-    }
-}
-
-/* Desktop: 4-6 cards per row */
-@media (min-width: 1201px) {
-    .card {
-        width: calc(16.66% - 18px); /* 6 cards per row */
-    }
+    color: #fff;
+    font-size: 14px;
+    opacity: .85;
 }
 </style>
 </head>
 
 <body>
 
+<!-- Header -->
 <div class="header">
-    <h1>Our Members</h1>
-    <p>WCC Weligollawa</p>
+    <h2 class="fw-semibold mb-1">Our Members</h2>
+    <p class="mb-0">WCC Weligollawa</p>
 </div>
 
-<div class="card-container" id="members"></div>
+<!-- Members Section -->
+<div class="container members-wrapper">
+    <div class="row g-3 justify-content-center" id="membersRow">
+        <!-- Cards injected here -->
+    </div>
+</div>
 
+<!-- Footer -->
 <footer>
     © WCC Weligollawa. All Rights Reserved.
 </footer>
@@ -159,7 +97,6 @@ footer {
 <script>
 const sheetId = "1KpFvhwi-yuo63ZSSQK80My6zM59gk2hHY1HZFk9q1Os";
 const sheetName = "Players wcc";
-
 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
 
 fetch(url)
@@ -167,24 +104,48 @@ fetch(url)
     .then(data => {
         const json = JSON.parse(data.substring(47).slice(0, -2));
         const rows = json.table.rows;
-        const container = document.getElementById("members");
+        const container = document.getElementById("membersRow");
 
         rows.forEach(row => {
             const name = row.c[0]?.v;
             const image = row.c[3]?.v;
 
             if (name && image) {
-                const card = document.createElement("div");
-                card.className = "card";
-                card.innerHTML = `
-                    <img src="${image}" alt="${name}">
-                    <h3 title="${name}">${name}</h3>
+                container.innerHTML += `
+                    <div class="col-10 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="card member-card text-center p-2 border-0 shadow-sm">
+                            <img src="${image}" class="img-fluid mx-auto" alt="${name}">
+                            <div class="card-body p-2">
+                                <h6 class="card-title text-primary fw-semibold mb-0 text-truncate" title="${name}">
+                                    ${name}
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
                 `;
-                container.appendChild(card);
             }
         });
+
+        if (window.innerWidth <= 576) {
+            autoScroll(container);
+        }
     })
     .catch(err => console.error("Error loading members:", err));
+
+function autoScroll(container) {
+    let index = 0;
+    const cards = container.children;
+
+    if (!cards.length) return;
+
+    setInterval(() => {
+        cards[index].scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+        index = (index + 1) % cards.length;
+    }, 2500);
+}
 </script>
 
 </body>

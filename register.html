@@ -176,6 +176,7 @@ form.addEventListener('submit', async e => {
 
     if(sheetRes.ok){
         status.textContent = "Data submitted successfully!";
+        window.location.href = "members.html";
         form.reset();
     } else {
         status.textContent = "Failed to save data!";

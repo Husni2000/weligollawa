@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WCC Weligollawa Form</title>
 <style>
-/* ===== Global Styles ===== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -22,7 +21,6 @@ body {
     padding: 20px;
 }
 
-/* ===== Form Container ===== */
 .form-container {
     background: #ffffff;
     width: 100%;
@@ -30,40 +28,32 @@ body {
     padding: 30px;
     border-radius: 15px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    transition: transform 0.3s ease;
-}
-
-.form-container:hover {
-    transform: translateY(-5px);
 }
 
 .form-container h2 {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     color: #1A73E8;
-    font-size: 28px;
 }
 
-/* ===== Form Fields ===== */
+.home-link {
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #1A73E8;
+    text-decoration: none;
+    font-weight: bold;
+}
+
 .form-container input {
     width: 100%;
-    padding: 14px 12px;
-    margin-bottom: 15px;
+    padding: 12px;
+    margin-bottom: 12px;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 16px;
-    transition: border 0.3s;
 }
 
-.form-container input:focus {
-    border-color: #1A73E8;
-    outline: none;
-}
-    /* ===== Home Link ===== */
-.home-link { display: block; text-align: center; margin-bottom: 20px; font-size: 16px; color: #1A73E8; text-decoration: none; font-weight: bold; }
-.home-link:hover { text-decoration: underline; }
-
-/* ===== Submit Button ===== */
 .form-container button {
     width: 100%;
     padding: 14px;
@@ -74,75 +64,63 @@ body {
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.3s;
 }
 
-.form-container button:hover {
-    background: #155cbf;
+.form-container button:disabled {
+    background: gray;
+    cursor: not-allowed;
 }
 
-/* ===== Info Text ===== */
-.info {
+#status {
     text-align: center;
-    margin-top: 15px;
-    font-size: 14px;
-    color: #555;
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 500px) {
-    .form-container {
-        padding: 20px;
-    }
-
-    .form-container h2 {
-        font-size: 24px;
-    }
-
-    .form-container input,
-    .form-container button {
-        font-size: 16px;
-        padding: 12px;
-    }
+    margin-top: 10px;
+    font-weight: bold;
 }
 </style>
 </head>
+
 <body>
 
 <div class="form-container">
     <a href="index.html" class="home-link">← Back to Home</a>
     <h2>WCC Weligollawa</h2>
-    <form id="myForm"> <!-- ID is mandatory -->
-    <input type="text" name="name" placeholder="Full Name" required>
-    <input type="number" name="age" placeholder="Age" required>
-    <input type="text" name="mobile" placeholder="Mobile Number" required>
-        <p id="status">uplod image</p>
-    <input type="file" id="imageFile" accept="image/*" required>
-    <button type="submit">Submit</button>
-</form>
-<p id="status"></p>
 
-  <p id="status" style="text-align:center;color:green;"></p>
-    <div class="info">
+    <form id="myForm">
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="number" name="age" placeholder="Age" required>
+        <input type="text" name="mobile" placeholder="Mobile Number" required>
+
+        <p id="status">Upload image</p>
+        <input type="file" id="imageFile" accept="image/*" required>
+
+        <button type="submit" id="submitBtn">Submit</button>
+    </form>
+
+    <div class="info" style="text-align:center; margin-top:15px;">
         Your data will be securely stored. Image upload via URL only.
     </div>
 </div>
 
-
 <script>
 const form = document.getElementById('myForm');
 const status = document.getElementById('status');
+const submitBtn = document.getElementById('submitBtn');
+
 const scriptURL = 'https://script.google.com/macros/s/AKfycbxLPUgNRjbE_itfbHGfNoVcBId3vPBfgZCJzFIRF7jLxl6tb1vDBZY5iMPX4iJF2rSAHA/exec';
 const apiKey = 'd44f105526f939f705e1a96a1700bf7a';
 
 form.addEventListener('submit', async e => {
     e.preventDefault();
+
+    // BLOCK DOUBLE CLICK
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
     status.textContent = "Uploading image...";
 
     const fileInput = document.getElementById('imageFile');
     const file = fileInput.files[0];
 
-    // Upload image to ImgBB
     const imgForm = new FormData();
     imgForm.append('image', file);
 
@@ -153,16 +131,17 @@ form.addEventListener('submit', async e => {
 
     const data = await res.json();
 
-    if(!data.success){
+    if (!data.success) {
         status.textContent = "Image upload failed!";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit";
         return;
     }
 
-    const imageURL = data.data.url; // <-- This is what must go to Google Sheet
+    const imageURL = data.data.url;
 
     status.textContent = "Sending data to Google Sheet...";
 
-    // Send form data + image URL
     const sheetData = new FormData();
     sheetData.append('name', form.name.value);
     sheetData.append('age', form.age.value);
@@ -174,15 +153,18 @@ form.addEventListener('submit', async e => {
         body: sheetData
     });
 
-    if(sheetRes.ok){
+    if (sheetRes.ok) {
         status.textContent = "Data submitted successfully!";
-        window.location.href = "members.html";
         form.reset();
+        setTimeout(() => {
+            window.location.href = "members.html";
+        }, 1000);
     } else {
         status.textContent = "Failed to save data!";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit";
     }
 });
-
 </script>
 
 </body>

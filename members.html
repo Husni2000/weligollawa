@@ -31,11 +31,6 @@ body {
     box-shadow: 0 -6px 20px rgba(0,0,0,0.15);
 }
 
-.member-card {
-    transition: transform .3s ease, box-shadow .3s ease;
-    cursor: pointer;
-}
-
 .member-card img {
     aspect-ratio: 1/1;
     object-fit: cover;
@@ -77,6 +72,7 @@ const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:j
 
 let likes = JSON.parse(localStorage.getItem("wccLikes") || "{}");
 let comments = JSON.parse(localStorage.getItem("wccComments") || "{}");
+let likedAlready = JSON.parse(localStorage.getItem("wccLikedOnce") || "{}");
 
 fetch(url)
 .then(res => res.text())
@@ -93,6 +89,10 @@ fetch(url)
 
             if (!likes[i]) likes[i] = 0;
             if (!comments[i]) comments[i] = [];
+            if (!likedAlready[i]) likedAlready[i] = false;
+
+            const likedText = likedAlready[i] ? "Liked ✔" : "👍 Like";
+            const disabled = likedAlready[i] ? "disabled" : "";
 
             container.innerHTML += `
 <div class="col-10 col-sm-6 col-md-4 col-lg-3 col-xl-2">
@@ -103,8 +103,8 @@ fetch(url)
 <div class="card-body p-2">
 <h6 class="card-title text-primary fw-semibold mb-1">${name}</h6>
 
-<button class="btn btn-sm btn-outline-primary mb-1"
-onclick="addLike(${i})">👍 Like</button>
+<button id="likeBtn${i}" class="btn btn-sm btn-outline-primary mb-1"
+${disabled} onclick="addLike(${i})">${likedText}</button>
 <span id="likeCount${i}">${likes[i]}</span> likes
 
 <br>
@@ -134,11 +134,20 @@ ${comments[i].map(c => `<div class="border-bottom py-1">• ${c}</div>`).join(""
 function saveData(){
     localStorage.setItem("wccLikes", JSON.stringify(likes));
     localStorage.setItem("wccComments", JSON.stringify(comments));
+    localStorage.setItem("wccLikedOnce", JSON.stringify(likedAlready));
 }
 
 function addLike(i){
+    if (likedAlready[i]) return;
+
     likes[i]++;
+    likedAlready[i] = true;
+
     document.getElementById("likeCount"+i).innerText = likes[i];
+    const btn = document.getElementById("likeBtn"+i);
+    btn.innerText = "Liked ✔";
+    btn.disabled = true;
+
     saveData();
 }
 

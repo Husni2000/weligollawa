@@ -54,6 +54,12 @@ body {
     border: 3px solid var(--blue);
 }
 
+/* Comment box */
+.comment-box {
+    display: none;
+    margin-top: 8px;
+}
+
 /* Mobile auto scroll */
 @media (max-width: 576px) {
     #membersRow {
@@ -99,50 +105,92 @@ const sheetId = "1KpFvhwi-yuo63ZSSQK80My6zM59gk2hHY1HZFk9q1Os";
 const sheetName = "Players wcc";
 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${sheetName}`;
 
+let likes = {};   
+let comments = {}; 
+
 fetch(url)
-    .then(res => res.text())
-    .then(data => {
-        const json = JSON.parse(data.substring(47).slice(0, -2));
-        const rows = json.table.rows;
-        const container = document.getElementById("membersRow");
+.then(res => res.text())
+.then(data => {
+    const json = JSON.parse(data.substring(47).slice(0, -2));
+    const rows = json.table.rows;
+    const container = document.getElementById("membersRow");
 
-        rows.forEach(row => {
-            const name = row.c[0]?.v;
-            const image = row.c[3]?.v;
+    rows.forEach((row, i) => {
+        const name = row.c[0]?.v;
+        const image = row.c[3]?.v;
 
-            if (name && image) {
-                container.innerHTML += `
-                    <div class="col-10 col-sm-6 col-md-4 col-lg-3 col-xl-2">
-                        <div class="card member-card text-center p-2 border-0 shadow-sm">
-                            <img src="${image}" class="img-fluid mx-auto" alt="${name}">
-                            <div class="card-body p-2">
-                                <h6 class="card-title text-primary fw-semibold mb-0 text-truncate" title="${name}">
-                                    ${name}
-                                </h6>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-        });
+        if (name && image) {
+            likes[i] = 0;
+            comments[i] = [];
 
-        if (window.innerWidth <= 576) {
-            autoScroll(container);
+            container.innerHTML += `
+<div class="col-10 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+<div class="card member-card text-center p-2 border-0 shadow-sm">
+
+<img src="${image}" class="img-fluid mx-auto" alt="${name}">
+
+<div class="card-body p-2">
+<h6 class="card-title text-primary fw-semibold mb-1 text-truncate">${name}</h6>
+
+<button class="btn btn-sm btn-outline-primary mb-1"
+onclick="addLike(${i})">👍 Like</button>
+<span id="likeCount${i}">0</span> likes
+
+<br>
+
+<button class="btn btn-sm btn-outline-secondary mt-1"
+onclick="toggleComments(${i})">💬 Comments</button>
+
+<div id="commentBox${i}" class="comment-box">
+<input type="text" id="input${i}" class="form-control form-control-sm mb-1"
+placeholder="Write a comment...">
+<button class="btn btn-sm btn-success w-100 mb-2"
+onclick="addComment(${i})">Post</button>
+
+<div id="commentList${i}" class="small text-start"></div>
+</div>
+
+</div>
+</div>
+</div>
+`;
         }
-    })
-    .catch(err => console.error("Error loading members:", err));
+    });
+
+    if (window.innerWidth <= 576) {
+        autoScroll(container);
+    }
+});
+
+function addLike(i){
+    likes[i]++;
+    document.getElementById("likeCount"+i).innerText = likes[i];
+}
+
+function toggleComments(i){
+    const box = document.getElementById("commentBox"+i);
+    box.style.display = box.style.display === "none" ? "block" : "none";
+}
+
+function addComment(i){
+    const input = document.getElementById("input"+i);
+    const text = input.value.trim();
+    if(text === "") return;
+
+    comments[i].push(text);
+    input.value = "";
+
+    const list = document.getElementById("commentList"+i);
+    list.innerHTML = comments[i]
+        .map(c => `<div class="border-bottom py-1">• ${c}</div>`)
+        .join("");
+}
 
 function autoScroll(container) {
     let index = 0;
     const cards = container.children;
-
-    if (!cards.length) return;
-
     setInterval(() => {
-        cards[index].scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
+        cards[index].scrollIntoView({ behavior:"smooth", block:"center" });
         index = (index + 1) % cards.length;
     }, 2500);
 }
